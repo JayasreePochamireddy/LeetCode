@@ -26,15 +26,12 @@ class Solution {
             List<Integer> level=new ArrayList<>();
             for(int i=0;i<sz;i++){
                 TreeNode temp=q.pop();
-                //if(flag) level.add(temp.val);
-                //else level.add(0,temp.val);
                 level.add(temp.val);
                 if(temp.left!=null) q.offer(temp.left);
                 if(temp.right!=null) q.offer(temp.right);
 
             }
             res.add(0,level);
-            //flag=!flag;
         }
         return res;
     }
