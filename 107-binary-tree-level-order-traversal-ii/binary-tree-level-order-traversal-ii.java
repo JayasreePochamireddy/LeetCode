@@ -19,8 +19,6 @@ class Solution {
         if(root==null) return res;
         Deque<TreeNode> q =new ArrayDeque<>();
         q.offer(root);
-        //FOR ZIGZAG CREATE A FLAG TRUE
-        //boolean flag=true;
         while(!q.isEmpty()){
             int sz=q.size();
             List<Integer> level=new ArrayList<>();
@@ -31,8 +29,10 @@ class Solution {
                 if(temp.right!=null) q.offer(temp.right);
 
             }
-            res.add(0,level);
+            res.add(level);
+            
         }
+        Collections.reverse(res);
         return res;
     }
 }
