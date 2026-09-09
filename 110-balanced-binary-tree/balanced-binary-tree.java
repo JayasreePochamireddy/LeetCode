@@ -17,9 +17,9 @@ class Solution {
     private int DFSHeight(TreeNode root){
         if(root==null) return 0;
         int lH = DFSHeight(root.left);
-        if(lH==-1) return -1;
+        //if(lH==-1) return -1;
         int rH = DFSHeight(root.right);
-        if(rH==-1) return -1;
+        if(lH==-1 || rH==-1) return -1;
         if(Math.abs(lH-rH)>1) return -1;
         return 1+Math.max(lH,rH);
     }
