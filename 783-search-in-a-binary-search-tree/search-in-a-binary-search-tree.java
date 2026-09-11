@@ -13,18 +13,18 @@
  *     }
  * }
  */
-/*class Solution {
+class Solution {
     public TreeNode searchBST(TreeNode root, int val) {
      if(root==null) return null;
      if(root.val==val) return root;
      else if(root.val<val) 
-        searchBST(root.right,val);
+        return searchBST(root.right,val);
      else 
-        searchBST(root.left,val);
-    return null;    
+        return searchBST(root.left,val);
+    //return null;    
     }
-}*/
-class Solution {
+}
+/*class Solution {
     public TreeNode searchBST(TreeNode root, int val) {
         if (root == null || root.val == val) {
             return root;
@@ -36,4 +36,4 @@ class Solution {
             return searchBST(root.right, val);
         }
     }
-}
+}*/
