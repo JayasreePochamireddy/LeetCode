@@ -1,42 +1,68 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
-        int n=grid.length;
-        int m=grid[0].length;
-        int minutes=-1;
-        int fresh=0;
-        Deque<int[]> dq=new ArrayDeque<>();
-        for(int r=0;r<n;r++){
-            for(int c=0;c<m;c++){
-                if(grid[r][c]==2){
-                    dq.offer(new int[]{r,c});
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int count = 0;
+
+        while (true) {
+
+            boolean rotted = false;
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+
+                    if (grid[i][j] == 2) {
+
+                        if (i - 1 >= 0 && grid[i - 1][j] == 1) {
+                            grid[i - 1][j] = 3;
+                            rotted = true;
+                        }
+
+                        if (i + 1 < m && grid[i + 1][j] == 1) {
+                            grid[i + 1][j] = 3;
+                            rotted = true;
+                        }
+
+                        if (j - 1 >= 0 && grid[i][j - 1] == 1) {
+                            grid[i][j - 1] = 3;
+                            rotted = true;
+                        }
+
+                        if (j + 1 < n && grid[i][j + 1] == 1) {
+                            grid[i][j + 1] = 3;
+                            rotted = true;
+                        }
+                    }
                 }
-                else if(grid[r][c]==1){
-                    fresh++;
+            }
+
+            if (!rotted) {
+                break;
+            }
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+
+                    if (grid[i][j] == 3) {
+                        grid[i][j] = 2;
+                    }
+                }
+            }
+
+            count++;
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (grid[i][j] == 1) {
+                    return -1;
                 }
             }
         }
-        if(fresh==0) return 0;
-        
-        int[][] dir ={{-1,0},{1,0},{0,-1},{0,1}};
-        while(!dq.isEmpty()){
-            int size=dq.size();
-            for(int i=0;i<size;i++){
-                int[] temp=dq.poll();
-                int x=temp[0];
-                int y=temp[1];
-                for(int[] d:dir){
-                    int r=x+d[0];
-                    int c=y+d[1];
-                    //if(grid[r][c]==2) continue;
-                    if(r>=0 && c>=0 && r<n && c<m && grid[r][c]==1){
-                        grid[r][c]=2;
-                        fresh--;
-                        dq.offer(new int[]{r,c});
-                    }   
-                }
-            }   
-            minutes++;
-        }
-        return fresh!=0?-1:minutes;
+
+        return count;
     }
 }
