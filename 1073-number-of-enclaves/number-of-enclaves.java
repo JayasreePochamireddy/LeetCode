@@ -1,49 +1,66 @@
 class Solution {
-    private void dfs(int[][] grid,int i,int j){
-        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length ||grid[i][j]==0) return ;
-      
-        //if(grid[i][j]==0 || grid[i][j]==1) return ;
-        grid[i][j]=0;
-        dfs(grid,i-1,j);
-        dfs(grid,i+1,j);
-        dfs(grid,i,j-1);
-        dfs(grid,i,j+1);
-        
+    class Pair{
+        int row;
+        int col;
+        Pair(int _row,int _col){
+            this.row=_row;
+            this.col=_col;
+        }
     }
     public int numEnclaves(int[][] grid) {
+       Queue<Pair> q = new LinkedList<>();
        int n=grid.length;
-       int m=grid[0].length;
-       //rows
-      
-        for(int j=0;j<m;j++){
-            if(grid[0][j]==1){
-                dfs(grid,0,j);
+       int m = grid[0].length;
+       int[][] vis=new int[n][m];
+       //all boundary ones in the queue
+       //first and last row
+       for(int i=0;i<m;i++){
+            //first row 0,i
+            if(grid[0][i]==1 && vis[0][i]==0){
+                q.offer(new Pair(0,i));
+                vis[0][i]=1;
             }
-            if(grid[n-1][j]==1){
-                dfs(grid,n-1,j);
+            //last row
+            //last row n-1,i
+            if(grid[n-1][i]==1 && vis[n-1][i]==0){
+                q.offer(new Pair(n-1,i));
+                vis[n-1][i] = 1;
+            }
+       }
+       //first and last column
+       for(int i=0;i<n;i++){
+            if(grid[i][0]==1 && vis[i][0]==0){
+                vis[i][0]=1;
+                q.offer(new Pair(i,0));
+            }
+            if(grid[i][m-1]==1 && vis[i][m-1]==0){
+                q.offer(new Pair(i,m-1));
+                vis[i][m-1] = 1;
             }
         }
-       
-       //columns
-       for(int i=0;i<n;i++){
-        
-            if(grid[i][0]==1){
-                dfs(grid,i,0);
-            }
-            if(grid[i][m-1]==1){
-                dfs(grid,i,m-1);
-            }
-        
-       }
-       int count=0; 
-       for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-
-            if(grid[i][j]==1){
-                count++;
+        int[] drow = {-1,0,1,0};
+        int[] dcol ={0,1,0,-1};
+        while(!q.isEmpty()){
+            int r = q.peek().row;
+            int c = q.peek().col;
+            q.poll();
+            for(int i=0;i<4;i++){
+                int nrow=r+drow[i];
+                int ncol = c+dcol[i];
+                if(nrow>=0 && nrow<=n-1 && ncol>=0 && ncol<=m-1 && grid[nrow][ncol]==1 && vis[nrow][ncol]==0){
+                    q.offer(new Pair(nrow,ncol));
+                    vis[nrow][ncol]=1;   
+                }
             }
         }
-       }
-       return count;    
+        int ans =0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1 && vis[i][j]==0){
+                    ans++;
+                }
+            }
+        }
+        return ans;
     }
 }
