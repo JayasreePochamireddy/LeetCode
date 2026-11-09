@@ -6,7 +6,6 @@ class Solution {
             if(hs.contains(num)) return true;
             hs.add(num);
         }
-       //if(nums.length=)
        return false;
     }
 }
